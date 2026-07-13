@@ -133,3 +133,42 @@ If this rule is missing, add it and save.
 -----------------------------------
 
 
+----------------how push new code to aws using git ---------------
+ption 1 (Recommended): Clone the repository on EC2
+
+If your project is on GitHub:
+
+On EC2:
+
+cd ~
+rm -rf docker-test
+git clone https://github.com/<your-username>/<your-repo>.git docker-test
+cd docker-test
+
+Now, when you make changes on your Mac:
+
+git add .
+git commit -m "Update app"
+git push
+
+On EC2:
+
+cd ~/docker-test
+git pull
+docker build -t docker-test .
+docker stop docker-test-app
+docker rm docker-test-app
+docker run -d -p 5000:5000 --name docker-test-app docker-test
+
+
+
+---------------------
+
+
+--------------------------------------------------
+
+login to aws EC2 
+ssh -i ~/Downloads/docker-test.pem ubuntu@16.171.2.136
+-----------------------------------------------
+
+
