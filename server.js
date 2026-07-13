@@ -3,7 +3,7 @@ const app = express()
 const port = 5000
 
 app.get('/', (req, res) => {
-  res.send('this is my another commit man')
+  res.send('another changes maded')
 })
 
 app.listen(port, () => {
