@@ -1,0 +1,135 @@
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["node", "server.js"]
+ 
+
+
+
+
+
+
+
+---------IF DOCKER IS. FIALING IN MACOS--------
+ BEFOR STARING DOCKER WE NEED ALWAY TO HAVE COLIMA RUNING OTHERWISE DOCKER IS NOT SUPPORTED IN MACOS
+colima stop
+colima start
+docker context use colima
+docker ps
+---------------- 
+
+
+
+
+------------IF SOME WANTED PORT IS UNED THEN WANT TO STOP THE RUNING THEN DO THIS-------------
+docker ps
+
+ook for something like:
+PORTS
+0.0.0.0:5000->5000/tcp
+
+
+docker stop <container_id>
+
+
+---------------------------------
+
+
+
+
+-------------------------------
+
+chmod 400 ~/Downloads/docker-test.pem
+What it does
+
+chmod = change file permissions on Linux/macOS.
+
+The file:
+
+~/Downloads/docker-test.pem
+
+is your SSH private key. AWS requires that private keys are not readable by other users on your computer.
+--------------------------------------
+
+
+
+------ HOW TO INSTALL DOCKER IN AWS IF NOT INSTALED-----------
+sudo apt update
+sudo apt install docker.io -y
+udo systemctl start docker
+sudo systemctl enable docker
+Step 2: Allow your ubuntu user to run Docker
+
+Run:
+
+sudo usermod -aG docker ubuntu
+Then log out:
+
+exit
+----------------------------------------
+
+
+
+-------how to move copy the code to EC2 AWS --------
+scp -i ~/Downloads/docker-test.pem -r . ubuntu@16.171.2.136:/home/ubuntu/docker-test
+-----------------------------------
+
+-----------how to log ing to EC2 using SSH------------
+4. SSH back into EC2
+ssh -i ~/Downloads/docker-test.pem ubuntu@16.171.2.136
+---------------------------
+
+----------------if page no availble in aws --------------
+
+If curl localhost:5000 works inside the EC2 instance, then your application is running. The problem is almost certainly that AWS is blocking incoming traffic or your app is only listening on localhost.
+
+Let's check these in order.
+
+1. Verify Docker is exposing the port
+
+On EC2, run:
+
+docker ps
+
+You should see something like:
+
+0.0.0.0:5000->5000/tcp
+
+If you only see:
+
+5000/tcp
+
+or
+
+127.0.0.1:5000->5000/tcp
+
+paste the output here.
+
+2. Check the EC2 Security Group (most common cause)
+
+In the AWS Console:
+
+Go to EC2.
+Click Instances.
+Select your instance.
+Go to the Security tab.
+Click the Security Group.
+Open Inbound rules.
+
+You should have a rule like:
+
+Type	Protocol	Port	Source
+Custom TCP	TCP	5000	0.0.0.0/0
+
+For IPv6, you can also add:
+
+Type	Protocol	Port	Source
+Custom TCP	TCP	5000	::/0
+
+If this rule is missing, add it and save.
+-----------------------------------
+
+
