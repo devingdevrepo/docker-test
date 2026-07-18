@@ -1,9 +1,5 @@
 name: action-number-2
-
-
 on: push 
-
-
 jobs:
   printing-2:
     runs-on: ubuntu-latest
@@ -11,5 +7,5 @@ jobs:
       - name: priting-hello
         run: echo "priting hello world for the second time"
 
-        
+
 
