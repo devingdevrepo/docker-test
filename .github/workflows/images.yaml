@@ -1,11 +1,10 @@
-name: first 
+name: print hello 
 
 on: push
 
+
 jobs:
-  build1:
-    runs-on: ubuntu-latest
-    steps: 
-      - name: first text
-        run: echo "print first hello world"
-    
+  runs-on: ubuntu-latest
+  steps:
+    - name: print
+      run: echo "Hello"
