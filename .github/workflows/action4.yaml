@@ -5,4 +5,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print action 4
-        run: eacho "print action 4"
+        run: echo "print action 4"
