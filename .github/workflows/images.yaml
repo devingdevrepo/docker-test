@@ -1,0 +1,10 @@
+name: Hello world
+
+on: push 
+
+jobs:
+  build:
+    run-on: ubuntu-latest
+    steps:
+      -name: Say Hello
+      echo "travel"
