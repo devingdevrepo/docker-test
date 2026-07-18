@@ -1,5 +1,4 @@
 name: action-number-3
-
 on: push 
 jobs:
   print:
