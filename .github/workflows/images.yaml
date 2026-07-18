@@ -7,5 +7,5 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - name: first text
-      run: echo "print first hello world"
+        run: echo "print first hello world"
     
