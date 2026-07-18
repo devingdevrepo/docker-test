@@ -1,5 +1,4 @@
 name: action-number-1
-
 on: push
 
 jobs:
