@@ -7,4 +7,4 @@ jobs:
     run-on: ubuntu-latest
     steps:
       - name: Say Hello
-      un:  echo  "travel"
+      run:  echo  "travel"
