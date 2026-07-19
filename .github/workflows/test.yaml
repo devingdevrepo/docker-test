@@ -10,16 +10,60 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Download your repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup SSH connection
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Add EC2 fingerprint
+      # Debug: check if secrets exist (DO NOT print private key)
+      - name: Debug secrets
+        run: |
+          echo "Checking EC2 variables..."
+          if [ -z "${{ secrets.EC2_HOST }}" ]; then
+            echo "EC2_HOST is missing"
+            exit 1
+          else
+            echo "EC2_HOST exists"
+          fi
+
+          if [ -z "${{ secrets.EC2_USER }}" ]; then
+            echo "EC2_USER is missing"
+            exit 1
+          else
+            echo "EC2_USER exists"
+          fi
+
+          if [ -z "${{ secrets.EC2_SSH_KEY }}" ]; then
+            echo "EC2_SSH_KEY is missing"
+            exit 1
+          else
+            echo "EC2_SSH_KEY exists"
+          fi
+
+      # Add EC2 server fingerprint
+      - name: Add EC2 host key
         run: |
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
+      # Test SSH connection
       - name: Test SSH connection
         run: |
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "hostname"
+          ssh -i ~/.ssh/id_rsa \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+          "echo SSH connection successful && hostname"
+
+      
+      - name: Deploy Docker container
+         run: |
+           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+             docker pull your-dockerhub-user/your-image:latest &&
+             docker stop app || true &&
+             docker rm app || true &&
+             docker run -d --name app -p 80:80 your-dockerhub-user/your-image:latest
+         "
