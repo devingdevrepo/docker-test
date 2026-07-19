@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: Deploy Node App to EC2
 
 on:
   push:
@@ -21,36 +21,42 @@ jobs:
 
       - name: Debug secrets
         run: |
-          echo "Checking EC2 variables..."
+          echo "Checking secrets..."
 
           if [ -z "${{ secrets.EC2_HOST }}" ]; then
-            echo "EC2_HOST is missing"
+            echo "EC2_HOST missing"
             exit 1
           else
             echo "EC2_HOST exists"
           fi
 
           if [ -z "${{ secrets.EC2_USER }}" ]; then
-            echo "EC2_USER is missing"
+            echo "EC2_USER missing"
             exit 1
           else
             echo "EC2_USER exists"
           fi
 
           if [ -z "${{ secrets.EC2_SSH_KEY }}" ]; then
-            echo "EC2_SSH_KEY is missing"
+            echo "EC2_SSH_KEY missing"
             exit 1
           else
             echo "EC2_SSH_KEY exists"
           fi
 
-      - name: Add EC2 host key
+      - name: Add EC2 host
         run: |
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Test SSH connection
+      - name: Test SSH
         run: |
-          ssh -i ~/.ssh/id_rsa \
-          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
-          "echo SSH connection successful && hostname"
-    #change uber ec2 
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "hostname"
+
+      - name: Deploy Docker application
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+            cd ~/app &&
+            git pull origin main &&
+            docker compose down &&
+            docker compose up -d --build
+          "
