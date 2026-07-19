@@ -53,4 +53,4 @@ jobs:
           ssh -i ~/.ssh/id_rsa \
           ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
           "echo SSH connection successful && hostname"
-    #data 
+    #change uber ec2 
