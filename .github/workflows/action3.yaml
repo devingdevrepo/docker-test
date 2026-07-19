@@ -1,8 +1,0 @@
-name: action-number-3
-on: push 
-jobs:
-  print:
-    runs-on: ubuntu-latest
-    steps: 
-      - name: print action 3 
-        run: echo  "print action3"

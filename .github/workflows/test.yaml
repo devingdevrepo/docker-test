@@ -1,0 +1,10 @@
+name: test
+
+on: push 
+
+jobs: 
+  build: 
+    runs-on: ubutu-latest
+    steps:
+      - name: test 
+        run: echo "Hello test"

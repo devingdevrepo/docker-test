@@ -1,9 +1,0 @@
-name: action-number-1
-on: push
-
-jobs:
-  first-job:
-    runs-on: ubuntu-latest
-    steps:  
-     - name: first-print
-       run: echo "Printing first action"  
